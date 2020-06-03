@@ -1,4 +1,4 @@
-import { LOAD_STORE, IS_LOADING, APPLY_FILTER } from './types';
+import { LOAD_STORE, IS_LOADING, APPLY_FILTER, SORT_STORE } from './types';
 import Axios from 'axios';
 
 const API_URL = 'http://opentable.herokuapp.com/api/restaurants?city=';
@@ -21,6 +21,13 @@ export const applyFilter = (stores, tags) => {
   return {
     type: APPLY_FILTER,
     payload: { tags, stores },
+  };
+};
+
+export const sortStore = (stores) => {
+  return {
+    type: SORT_STORE,
+    payload: stores,
   };
 };
 

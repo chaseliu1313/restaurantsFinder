@@ -1,4 +1,4 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import re1 from '../resource/imgs/re1.jpg';
 import re2 from '../resource/imgs/re2.jpg';
 import re3 from '../resource/imgs/re3.jpg';

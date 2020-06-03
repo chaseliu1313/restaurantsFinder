@@ -25,17 +25,7 @@ import {
 
 //Store Card
 const Store = ({ store, delay, setSelected, setShow }) => {
-  const {
-    name,
-    area,
-    id,
-    phone,
-    postal_code,
-    reserve_url,
-    state,
-    address,
-    price,
-  } = store;
+  const { name, area, postal_code, address, price, key } = store;
 
   const handleClick = () => {
     setSelected(store);
@@ -43,12 +33,18 @@ const Store = ({ store, delay, setSelected, setShow }) => {
   };
 
   return (
-    <Container delay={delay} onClick={() => handleClick()}>
-      <IMG src={getRandomPic()} alt={name + ' image'} />
-      <H2>{name}</H2>
+    <Container delay={delay} onClick={() => handleClick()} area-lable="store">
+      <IMG
+        src={getRandomPic()}
+        alt="store front image"
+        aria-label="store front image"
+      />
+      <H2 aria-label="store name">{name}</H2>
 
-      <P>{address + area + ' ' + postal_code}</P>
-      <P bottom="0">{setPrice(price)}</P>
+      <P aria-label="store address">{address + area + ' ' + postal_code}</P>
+      <P bottom="0" aria-label="store price range">
+        {setPrice(price)}
+      </P>
     </Container>
   );
 };
@@ -147,29 +143,43 @@ export const StoreModal = ({ store, showModal }) => {
   };
 
   return (
-    <Modal show={show}>
+    <Modal show={show} aria-label="store detail modal">
       <ModalHeader>
-        <ModalCloseBtn onClick={() => handleClick()}>&times;</ModalCloseBtn>
+        <ModalCloseBtn
+          onClick={() => handleClick()}
+          aria-label="close button"
+          aria-pressed="false"
+          role="button"
+        >
+          &times;
+        </ModalCloseBtn>
       </ModalHeader>
       {store ? (
         <ModalContent>
-          <H2 modal>
+          <H2 modal aria-label="store name and price range" role="heading">
             <FontAwesomeIcon icon={faStore} />
             {' ' + store.name + ' '}
             {setPrice(store.price)}
           </H2>
-          <H2 modal>
+          <H2 modal aria-label="store address">
             <FontAwesomeIcon icon={faThumbtack} />
             {' ' + store.address + ' ' + store.city}
           </H2>
-          <H2 modal>
+          <H2
+            modal
+            aria-label="store state country and postal code"
+            data-testid="modal_content"
+          >
             {store.state + ' ' + store.country + ' ' + store.postal_code}
           </H2>
-          <H2 modal>
+          <H2 modal aria-label="store contact number">
             <FontAwesomeIcon icon={faPhone} />
             {' ' + store.phone}
           </H2>
           <ModalButton
+            aria-label="makde reservation button"
+            aria-pressed="false"
+            role="button"
             href={
               window.innerWidth < 1024
                 ? store.reserve_url

@@ -19,16 +19,16 @@ const SearchBar = ({
   tags,
 }) => {
   const [input, setInput] = useState('');
-
+  const [btnText, setText] = useState('Search');
   const handleInput = (e) => {
     const userInput = e.target.value;
     setInput(userInput);
   };
 
   useEffect(() => {
-    console.log(stores);
     if (tags.length === 0) {
       setSearch(true);
+      setText('Search');
     } else {
       setSearch(false);
     }
@@ -43,32 +43,45 @@ const SearchBar = ({
         fetchingList(input);
         addTag(input);
       }
-
+      setInput('');
       setSearch(false);
+      setText('Add Tag');
     } else if (!isNewSearch) {
       if (input === '') {
         window.alert('Tags cannot be empty');
+        fetchingList(tags[0]);
       } else {
         addTag(input);
-        applyFilter(stores, tags);
       }
+      setInput('');
     }
   };
 
   return (
-    <Container>
-      <H1>
+    <Container role="presentation">
+      <H1 role="heading" aria-level="1" aria-label="website name">
         <FontAwesomeIcon icon={faCookieBite} />
         FoodieHunt
       </H1>
       <Input
         type="text"
-        placeholder="Start your search by entering location."
+        placeholder="Start your search by entering the location then keep adding filters to the search bar."
         onChange={(e) => handleInput(e)}
+        value={input}
+        role="input filed"
+        aria-label="search or add filter tags area"
+        data-testid="search-input"
       />
-      <Button type="submit" onClick={() => handleSubmit()}>
+      <Button
+        type="submit"
+        onClick={() => handleSubmit()}
+        aria-label="Search button"
+        aria-pressed="false"
+        role="button"
+        data-testid="search-button"
+      >
         <FontAwesomeIcon icon={faSearchLocation} />
-        Search
+        {btnText}
       </Button>
     </Container>
   );
@@ -145,7 +158,10 @@ const Button = styled.button`
   float: right;
   border-radius: 5px;
   cursor: pointer;
-
+  @media (max-width: ${size.laptopL}) {
+    width: 15vw;
+    margin-left: 2vmin;
+  }
   @media (max-width: ${size.tablet}) {
     width: 40vw;
     margin: 5vmin 0;

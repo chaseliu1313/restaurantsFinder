@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { color_er, color_bg2, color_bg3, size } from '../theme/index';
-import { addTag, deleteTag, clearTags, setSearch } from '../action/index';
+import { color_er, color_bg2, color_bg3, size, color_fr } from '../theme/index';
+import {
+  sortStore,
+  deleteTag,
+  clearTags,
+  setSearch,
+  applyFilter,
+} from '../action/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter, faFunnelDollar } from '@fortawesome/free-solid-svg-icons';
 
-const SearchTags = ({ tags, clearTags, deleteTag, setSearch }) => {
+const SearchTags = ({
+  tags,
+  stores,
+  deleteTag,
+  setSearch,
+  applyFilter,
+  sortStore,
+}) => {
   const [currentTags, setTags] = useState([]);
 
   useEffect(() => {
@@ -16,30 +31,68 @@ const SearchTags = ({ tags, clearTags, deleteTag, setSearch }) => {
     }
   }, [tags]);
 
+  const handleFilter = () => {
+    applyFilter(stores, tags);
+  };
+
+  const handleSorting = () => {
+    sortStore(stores);
+  };
+
   return (
-    <Container>
+    <Container role="presentation" aria-label="filter tags area">
       {currentTags.length === 0 ? (
-        <P>
+        <P aria-label="page instructions">
           You can continue entering in the search bar to refine your search
           results.
         </P>
       ) : (
         currentTags.map((t, index) => (
-          <Tags content={t} key={index} onDelete={deleteTag} />
+          <Tags
+            content={t}
+            aria-label="filter tag"
+            key={index}
+            onDelete={deleteTag}
+            tags={tags}
+            setSearch={setSearch}
+          />
         ))
       )}
+      <div>
+        <ApplyButton
+          onClick={() => handleFilter()}
+          aria-label="Apply Filter Button"
+          aria-pressed="false"
+          role="button"
+        >
+          <FontAwesomeIcon icon={faFilter} />
+          Apply Filter
+        </ApplyButton>
+        <ApplyButton
+          onClick={() => handleSorting()}
+          aria-label="Apply Filter price from low to high button"
+          aria-pressed="false"
+          role="button"
+        >
+          <FontAwesomeIcon icon={faFunnelDollar} />
+          Sort
+        </ApplyButton>
+      </div>
     </Container>
   );
 };
 
-const Tags = (props) => {
+const Tags = ({ content, onDelete, tags, setSearch }) => {
   const handleClick = () => {
-    props.onDelete(props.content);
+    onDelete(content);
+    if (tags.length === 0) {
+      setSearch(true);
+    }
   };
 
   return (
     <Tag>
-      <Content>{props.content}</Content>
+      <Content>{content}</Content>
       <Button onClick={() => handleClick()}>X</Button>
     </Tag>
   );
@@ -48,16 +101,17 @@ const Tags = (props) => {
 const mapDispatchToProps = (dispach) => {
   return {
     clearTags: () => dispach(clearTags()),
-
+    applyFilter: (stores, tags) => dispach(applyFilter(stores, tags)),
     deleteTag: (tag) => dispach(deleteTag(tag)),
     setSearch: (isNewSearch) => dispach(setSearch(isNewSearch)),
+    sortStore: (stores) => dispach(sortStore(stores)),
   };
 };
 
 const mapStateToProps = (state) => {
   const tags = state.tags;
-
-  return { tags };
+  const stores = state.stores;
+  return { tags, stores };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchTags);
@@ -65,9 +119,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(SearchTags);
 const Container = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   background-color: ${color_bg3};
-  padding: 10px 0;
+  padding: 10px;
   flex-wrap: wrap;
 `;
 
@@ -105,4 +159,30 @@ const Button = styled.button`
 const P = styled.p`
   font-size: 2vmin;
   color: #fff;
+`;
+
+const ApplyButton = styled.button`
+  width: 10vw;
+  height: 5vh;
+  border: 0;
+  background: none;
+  background-color: ${color_fr};
+  border: 5px solid ${color_fr};
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  margin-left: 1vmin;
+  float: right;
+  border-radius: 5px;
+  cursor: pointer;
+
+  @media (max-width: ${size.laptopL}) {
+    width: 15vw;
+    margin-left: 2vmin;
+  }
+
+  @media (max-width: ${size.tablet}) {
+    width: 40vw;
+    margin: 3vmin;
+  }
 `;

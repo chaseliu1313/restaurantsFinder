@@ -1,6 +1,6 @@
 //ACTION TYPES
 export const LOAD_STORE = 'LOAD_STORE';
-
+export const SORT_STORE = 'SORT_STORE';
 //TAGS ACTIONS
 export const ADD_TAG = 'ADD_TAG';
 export const DELETE_TAG = 'DELETE_TAG';

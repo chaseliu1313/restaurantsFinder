@@ -11,12 +11,14 @@ function Loading({ isLoading }) {
     setloading(newState);
   }, [isLoading]);
   return (
-    <Fragment loading={loading}>
+    <Fragment loading={loading.toString()}>
       <Container>
         <Core />
       </Container>
       <div style={{ marginTop: '20vmin' }}>
-        <h3>Loading...</h3>
+        <h3 aria-level="3" aria-label="The content is loading">
+          Loading...
+        </h3>
       </div>
     </Fragment>
   );
@@ -106,5 +108,5 @@ const Fragment = styled.div`
   top: 50%;
   width: 100%;
   height: 50vmin;
-  display: ${({ loading }) => (loading ? 'flex' : 'none')};
+  display: ${({ loading }) => (loading === 'true' ? 'flex' : 'none')};
 `;

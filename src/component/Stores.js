@@ -22,7 +22,9 @@ const Stores = ({ stores }) => {
       <Loading />
       <Container>
         {currentStores.length === 0 ? (
-          <H1>Search your favorate Restuaurant now.</H1>
+          <H1 role="heading" aria-level="2" aria-label="search hint">
+            Search your favorite restaurant now.
+          </H1>
         ) : (
           currentStores.map((store, index) => (
             <Store
@@ -31,11 +33,13 @@ const Stores = ({ stores }) => {
               delay={index * 0.1}
               setSelected={setSelected}
               setShow={setShow}
+              aria-label="store card"
+              role="presentation"
             />
           ))
         )}
       </Container>
-      <StoreModal store={selected} showModal={show} />
+      <StoreModal store={selected} showModal={show} key="key" />
     </>
   );
 };

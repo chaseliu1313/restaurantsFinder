@@ -1,5 +1,5 @@
 import { ADD_TAG, DELETE_TAG, CLEAR_TAG, NEW_SEARCH } from './types';
-
+//actions for manipulating tags
 export const addTag = (tag) => {
   return {
     type: ADD_TAG,
