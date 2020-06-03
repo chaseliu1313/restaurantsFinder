@@ -1,7 +1,7 @@
 import { LOAD_STORE, IS_LOADING, APPLY_FILTER, SORT_STORE } from './types';
 import Axios from 'axios';
 
-const API_URL = 'http://opentable.herokuapp.com/api/restaurants?city=';
+const API_URL = 'https://opentable.herokuapp.com/api/restaurants?city=';
 
 export const fetchStores = (stores) => {
   return {
